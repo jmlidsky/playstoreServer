@@ -1,10 +1,7 @@
 const express = require('express');
 const morgan = require('morgan');
-
 const app = express();
-
 app.use(morgan('common'));
-
 const apps = require('./playstore.js');
 
 app.get('/apps', (req, res) => {
@@ -27,13 +24,11 @@ app.get('/apps', (req, res) => {
     }
 
     let results = apps
-        .filter(app =>
-            app
-                .Genres
-                .toLowerCase()
-                .includes(genres.toLowerCase())
-        )
-
+        .filter(app => {
+            const genres = app.Genres.split(';');
+            return genres.find(genre => {
+                genre.toLowerCase() === Genres.toLowerCase()
+        })
 
     if (sort === 'Rating') {
         results
@@ -41,14 +36,12 @@ app.get('/apps', (req, res) => {
                 return a[sort] < b[sort] ? 1 : a[sort] > b[sort] ? -1 : 0;
             })
     }
-
     if (sort === 'App') {
         results
             .sort((a, b) => {
                 return a[sort] > b[sort] ? 1 : a[sort] < b[sort] ? -1 : 0;
             })
     }
-
     res
         .json(results);
 });
