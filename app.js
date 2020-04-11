@@ -23,13 +23,7 @@ app.get('/apps', (req, res) => {
         }
     }
 
-    let results = apps
-        .filter(app => {
-            const genresList = app.Genres.split(';');
-            return genresList.find(genre => {
-                genre.toLowerCase() === genres.toLowerCase()
-            })
-        })
+    let results = apps.filter(app => app.Genres.toLowerCase().includes(genres.toLowerCase()));
 
     if (sort === 'Rating') {
         results
